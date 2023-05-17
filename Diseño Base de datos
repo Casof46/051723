@@ -1,0 +1,23 @@
+use NORTHWND1
+
+select ShipCountry, shipcity, ShipPostalCode, count(*) Quantity
+from orders as O join Customers as C on O.CustomerID = C.CustomerID  
+where (city<>shipcity) or (ShipPostalCode<>PostalCode) 
+group by ShipCountry, shipcity, ShipPostalCode 
+
+select ShippedDate, CompanyName, ShipperID 
+from orders as O join Shippers as S on O.ShipVia = S.ShipperID 
+where (ShipCountry='Mexico') and (ShippedDate between'20180101' and '20180228')
+
+select E.LastName, E.FirstName, E.ReportsTo, B.LastName, B.FirstName 
+FROM Employees E left join Employees B on E.ReportsTo = B.EmployeeID
+
+select OrderID, sum(Quantity*UnitPrice*(1-discount)) as total 
+from [Order Details] 
+group by OrderID
+
+select Country, year(orderDate) as year, sum(Quantity*UnitPrice*(1-discount)) as total 
+from [Order Details] OO 
+join Orders O on  OO.OrderID =O.OrderID
+join Employees E on O.EmployeeID = E.EmployeeID
+group by Country, year(orderDate)
